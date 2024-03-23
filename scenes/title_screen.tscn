@@ -1,0 +1,179 @@
+[gd_scene load_steps=11 format=3 uid="uid://bymv2ashjyxqu"]
+
+[ext_resource type="Texture2D" uid="uid://lqtkc2uphytg" path="res://assets/Menu/Text/title-screen.jpg" id="1_f3k7u"]
+[ext_resource type="Script" path="res://scripts/title_screen.gd" id="1_lgwfu"]
+[ext_resource type="Texture2D" uid="uid://ch2f3cg5gihhe" path="res://assets/Menu/Text/frog_resized.png" id="2_6g4s1"]
+[ext_resource type="Theme" uid="uid://4dnosp3bbqs8" path="res://themes/default_btn.tres" id="3_2odk8"]
+[ext_resource type="Texture2D" uid="uid://bkj0ve1rycciq" path="res://assets/Main Character/Ninja Frog/Fall (32x32).png" id="3_f50yo"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_rji2s"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cd1pc"]
+
+[sub_resource type="Animation" id="Animation_qx78e"]
+resource_name = "reveal"
+length = 1.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.1, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-360, 0), Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer/HBoxContainer/Ninja:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.1, 0.8, 1.2),
+"transitions": PackedFloat32Array(1, 0.120742, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_fqhdq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Background:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MarginContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer/HBoxContainer/Ninja:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_bm34w"]
+_data = {
+"RESET": SubResource("Animation_fqhdq"),
+"reveal": SubResource("Animation_qx78e")
+}
+
+[node name="TitleScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lgwfu")
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 2
+offset_right = 640.0
+offset_bottom = 320.0
+texture = ExtResource("1_f3k7u")
+expand_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -72.0
+offset_bottom = -61.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+
+[node name="Game" type="TextureRect" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+texture_filter = 4
+layout_mode = 2
+texture = ExtResource("2_6g4s1")
+
+[node name="StartButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme = ExtResource("3_2odk8")
+text = "START"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_rji2s")
+
+[node name="CreditsButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_2odk8")
+text = "CREDITS"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_cd1pc")
+
+[node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("3_2odk8")
+text = "QUIT GAME"
+
+[node name="Ninja" type="TextureRect" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("3_f50yo")
+expand_mode = 2
+flip_h = true
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "reveal"
+libraries = {
+"": SubResource("AnimationLibrary_bm34w")
+}
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

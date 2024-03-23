@@ -1,0 +1,134 @@
+[gd_scene load_steps=14 format=3 uid="uid://b2jrpbtr3y2im"]
+
+[ext_resource type="Script" path="res://scripts/rocket_cherry.gd" id="1_6sluu"]
+[ext_resource type="Texture2D" uid="uid://bvx2u0slj04lm" path="res://assets/Enemies/Rocket Cherry/Flying (16 x 32).png" id="1_og8rc"]
+[ext_resource type="Texture2D" uid="uid://bl8vmkilptgiv" path="res://assets/Enemies/Rocket Cherry/Hurt_Falling (16 x 32).png" id="2_4bxu7"]
+[ext_resource type="PackedScene" uid="uid://d2b5ug2ecrqdi" path="res://prefabs/hitbox.tscn" id="3_ov3d7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcv3y"]
+atlas = ExtResource("1_og8rc")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bnut"]
+atlas = ExtResource("1_og8rc")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_m1w85"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcv3y")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bnut")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_4bxu7")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tm3cx"]
+size = Vector2(12, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sd82p"]
+size = Vector2(11, 2.97316)
+
+[sub_resource type="Curve2D" id="Curve2D_etc3v"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -113)
+}
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_aemig"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_tncix"]
+resource_name = "patrol"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2m5x2"]
+_data = {
+"RESET": SubResource("Animation_aemig"),
+"patrol": SubResource("Animation_tncix")
+}
+
+[node name="BasePatrol" type="Node2D"]
+
+[node name="RocketCherry" type="CharacterBody2D" parent="."]
+position = Vector2(0, -30.0786)
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_6sluu")
+enemy_score = 200
+
+[node name="Animation" type="AnimatedSprite2D" parent="RocketCherry"]
+sprite_frames = SubResource("SpriteFrames_m1w85")
+animation = &"hurt"
+autoplay = "flying"
+frame_progress = 1.0
+
+[node name="Collision" type="CollisionShape2D" parent="RocketCherry"]
+position = Vector2(0, 7)
+shape = SubResource("RectangleShape2D_tm3cx")
+
+[node name="Hitbox" parent="RocketCherry" instance=ExtResource("3_ov3d7")]
+
+[node name="Collision" type="CollisionShape2D" parent="RocketCherry/Hitbox"]
+position = Vector2(0.5, 0.513421)
+shape = SubResource("RectangleShape2D_sd82p")
+debug_color = Color(0.858824, 0.356863, 0.188235, 0.419608)
+
+[node name="Path2D" type="Path2D" parent="."]
+visible = false
+curve = SubResource("Curve2D_etc3v")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(0, -30.0786)
+progress = 29.1025
+rotates = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
+remote_path = NodePath("../../../RocketCherry")
+
+[node name="SpawnEnemy" type="Marker2D" parent="."]
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "patrol"
+speed_scale = 0.5
+libraries = {
+"": SubResource("AnimationLibrary_2m5x2")
+}
+
+[connection signal="body_entered" from="RocketCherry/Hitbox" to="RocketCherry" method="_on_hitbox_body_entered"]

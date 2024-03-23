@@ -1,0 +1,64 @@
+[gd_scene load_steps=10 format=3 uid="uid://bbdupr5u4mjnf"]
+
+[ext_resource type="Texture2D" uid="uid://cttqswhc0dbys" path="res://assets/Enemies/Rocket Cherry/Hopping (16 x 32).png" id="1_8amwf"]
+[ext_resource type="Script" path="res://scripts/cherry.gd" id="1_f2ssh"]
+[ext_resource type="Texture2D" uid="uid://c7wru7uhhnpvi" path="res://assets/Enemies/Rocket Cherry/Hurt (16 x 32).png" id="2_0x6qp"]
+[ext_resource type="PackedScene" uid="uid://d2b5ug2ecrqdi" path="res://prefabs/hitbox.tscn" id="4_p3tmx"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_32kqx"]
+size = Vector2(14, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obut6"]
+atlas = ExtResource("1_8amwf")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bb5x4"]
+atlas = ExtResource("1_8amwf")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_s546u"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obut6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bb5x4")
+}],
+"loop": true,
+"name": &"hopping",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_0x6qp")
+}],
+"loop": true,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ppx28"]
+size = Vector2(12, 4)
+
+[node name="Cherry" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_f2ssh")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 11.5)
+shape = SubResource("RectangleShape2D_32kqx")
+
+[node name="Animation" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_s546u")
+animation = &"hopping"
+autoplay = "hopping"
+frame_progress = 0.396691
+
+[node name="Hitbox" parent="." instance=ExtResource("4_p3tmx")]
+
+[node name="Collision" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(1, 5)
+shape = SubResource("RectangleShape2D_ppx28")
+debug_color = Color(0.968627, 0.176471, 0, 0.419608)

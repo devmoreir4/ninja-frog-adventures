@@ -1,0 +1,135 @@
+[gd_scene load_steps=10 format=3 uid="uid://cn1yv4674pof4"]
+
+[ext_resource type="Texture2D" uid="uid://bjx4vtyf2mufd" path="res://assets/Menu/Text/game_over.png" id="1_13j63"]
+[ext_resource type="Script" path="res://scripts/game_over.gd" id="1_wneh0"]
+[ext_resource type="Theme" uid="uid://4dnosp3bbqs8" path="res://themes/default_btn.tres" id="2_ylqa6"]
+[ext_resource type="FontFile" uid="uid://y74737fb280d" path="res://assets/Menu/Text/Default/RevMiniPixel.ttf" id="3_h71sh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7j0te"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yxdq0"]
+
+[sub_resource type="Animation" id="Animation_bim0s"]
+resource_name = "fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:modulate")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5, 0.9),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_0jdl3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VBoxContainer:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_cobdn"]
+_data = {
+"RESET": SubResource("Animation_0jdl3"),
+"fade_in": SubResource("Animation_bim0s")
+}
+
+[node name="GameOver" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wneh0")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -84.0
+offset_top = -42.0
+offset_right = 84.0
+offset_bottom = 42.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Texture" type="TextureRect" parent="VBoxContainer"]
+layout_mode = 2
+texture = ExtResource("1_13j63")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_7j0te")
+
+[node name="RestartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ylqa6")
+theme_override_fonts/font = ExtResource("3_h71sh")
+text = "RESTART GAME"
+
+[node name="HSeparator2" type="HSeparator" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxEmpty_yxdq0")
+
+[node name="QuitButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+theme = ExtResource("2_ylqa6")
+theme_override_fonts/font = ExtResource("3_h71sh")
+text = "QUIT GAME"
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "fade_in"
+libraries = {
+"": SubResource("AnimationLibrary_cobdn")
+}
+
+[connection signal="pressed" from="VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
